@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}
+- ゴミ箱 -
+{% endblock %}
+
+{% block contents %}
+<div class="index">
+    <h1>ゴミ箱</h1>
+    <a href="{% url 'index' %}">タスクに戻る</a>
+    
+    <ul>
+        {% for task in deleted_tasks_list %}
+        <li>
+            <form action="{% url 'restore_task' %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <button class="restore">復元</button>
+            </form>
+            
+            <form action="{% url 'permanent_delete' task_id=task.id %}" class="delete" method="post">
+                {% csrf_token %}
+                <button class="delete">完全に削除</button>
+            </form>
+            
+            <div class="task-header">
+                <span class="task-title">{{ task.title }}</span>
+                <span class="task-date">
+                    {{ task.start_date|date:"Y年m月d日 H:i" }} - {{ task.end_date|date:"Y年m月d日 H:i" }}
+                </span>
+            </div>
+            <p class="task-description">{{ task.description }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

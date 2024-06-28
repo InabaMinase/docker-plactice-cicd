@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+- Edit Task -
+{% endblock %}
+
+{% block contents %}
+<div class="add">
+    <h1>削除確認</h1>
+
+    <form action="{% url 'delete' task_id=task_id %}" method="post" onsubmit="return confirm('本当に削除しますか？');">
+        {% csrf_token %}
+        <div>
+            <label class="la">タスク名:</label><p class="delete">{{ task.title }}</p>
+            <label class="la">詳細:</label><p class="delete">{{ task.description }}</p>
+            <label class="la">開始日:</label><p class="delete">{{ task.start_date|date:"Y年m月d日 H:i" }}</p>
+            <label class="la">終了日:</label><p class="delete">{{ task.end_date|date:"Y年m月d日 H:i" }}</>
+        </div>
+        
+        <button id="delbtn" type="submit">削除</button>
+    </form>
+    
+    <a href="{% url 'index' %}">一覧へ戻る</a>
+</div>
+{% endblock %}
